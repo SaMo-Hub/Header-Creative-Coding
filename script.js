@@ -472,10 +472,10 @@ console.log(btnSelect);
       .filter((item) => item.pastille === "red");
 
     const item = redItems[Math.floor(Math.random() * redItems.length)];
-    if (item.vetement == 'jean') {vetement = 260, width= 120}
+    if (item.vetement == 'jean') {vetement = 255, width=145}
     if (item.vetement == 'tshirt') vetement = 220 ,width= 120
     if (item.vetement == 'hat') vetement = 120, width= 60
-    await createImage(x, y, width, width, item.img, item.kg,"red",vetement);
+    await createImage(x, y, width, width, item.img, item.kg,item.pastille,vetement);  
 
   } 
    if (btnSelect === "blue") {
@@ -484,20 +484,22 @@ console.log(btnSelect);
       .filter((item) => item.pastille === "blue");
     
     const item = blueItems[Math.floor(Math.random() * blueItems.length)];
- if (item.vetement == 'jean') {vetement = 260, width= 120}
+    if (item.vetement == 'jean') {vetement = 255, width=145}
     if (item.vetement == 'tshirt') vetement = 220 ,width= 120
     if (item.vetement == 'hat') vetement = 120, width= 60
-    await createImage(x, y, width, width, item.img, item.kg,"red",vetement);  }
+    await createImage(x, y, width, width, item.img, item.kg,item.pastille,vetement);  
+   }
    if (btnSelect === "orange") {
     const blueItems = Object.values(listCloth)
       .flat()
       .filter((item) => item.pastille === "orange");
     
     const item = blueItems[Math.floor(Math.random() * blueItems.length)];
- if (item.vetement == 'jean') {vetement = 260, width= 120}
+    if (item.vetement == 'jean') {vetement = 255, width=145}
     if (item.vetement == 'tshirt') vetement = 220 ,width= 120
     if (item.vetement == 'hat') vetement = 120, width= 60
-    await createImage(x, y, width, width, item.img, item.kg,"red",vetement);  }
+    await createImage(x, y, width, width, item.img, item.kg,item.pastille,vetement);  
+    }
    if (btnSelect === "vert") {
     const blueItems = Object.values(listCloth)
       .flat()
@@ -505,10 +507,11 @@ console.log(btnSelect);
  
     
     const item = blueItems[Math.floor(Math.random() * blueItems.length)];
- if (item.vetement == 'jean') {vetement = 260, width= 120}
+    if (item.vetement == 'jean') {vetement = 255, width=145}
     if (item.vetement == 'tshirt') vetement = 220 ,width= 120
     if (item.vetement == 'hat') vetement = 120, width= 60
-    await createImage(x, y, width, width, item.img, item.kg,"red",vetement);  }
+    await createImage(x, y, width, width, item.img, item.kg,item.pastille,vetement);  
+  }
 
   isLoading = false; // 🔓 prêt pour un nouveau clic
 });
@@ -532,13 +535,15 @@ const sectionBalance = document.querySelector(".balance");
 
 
 
-const selectedCloth = [
-  {
-    img: listCloth.hat[0].img ,
-    pastille: listCloth.hat[0].pastille,
-    kg: listCloth.hat[0].kg,
-    vetement:'hat',
+const selectedCloth = [  {
+    img: listCloth.pantalon[0].img,
+    kg: listCloth.pantalon[0].kg,
+    pastille: listCloth.pantalon[0].pastille,
+        vetement:'jean',
+
   },
+
+ 
 
   {
     img: listCloth.tshirt[0].img,
@@ -547,12 +552,11 @@ const selectedCloth = [
         vetement:'tshirt',
 
   },
-  {
-    img: listCloth.pantalon[0].img,
-    kg: listCloth.pantalon[0].kg,
-    pastille: listCloth.pantalon[0].pastille,
-        vetement:'pantatlon',
-
+ {
+    img: listCloth.hat[0].img ,
+    pastille: listCloth.hat[0].pastille,
+    kg: listCloth.hat[0].kg,
+    vetement:'hat',
   },
   
 ];
@@ -583,11 +587,13 @@ let currentIndex = 0;
 let hasValidatedOnScroll = false;
 
 const observer = new IntersectionObserver(
+  
   (entries) => {
-    
+
     entries.forEach((entry) => {
       if (entry.isIntersecting && !hasValidatedOnScroll) {
         validerTenue()
+        
         hasValidatedOnScroll = true;
         observer.unobserve(entry.target); // Arrête d'observer après déclenchement
       }
@@ -604,13 +610,16 @@ let isValidationInProgress = false;
 async function validerTenue   () {
     const centerX = width / 2;
 let vetement
+
   let size
   if (isValidationInProgress) return;
   isValidationInProgress = true;
 
   try {
     for (const item of selectedCloth) {
-       if (item.vetement == 'jean') {vetement = 260, size= 120}
+      
+      console.log(item.vetement);
+    if (item.vetement == 'jean') {vetement = 255, size=145}
     if (item.vetement == 'tshirt') vetement = 220 ,size= 120
     if (item.vetement == 'hat') vetement = 120, size= 60
       await createImage(centerX, 20,size, size, item.img, item.kg, item.pastille,vetement);
@@ -620,63 +629,8 @@ let vetement
     isValidationInProgress = false;
   }
 };
-const clothingParts = {
-  hat: {
-    list: listCloth.hat,
-    imageEl: document.getElementById("hatImage"),
-    textEl: document.getElementById("hatTexte"),
-    index: 0,
-    selectedIndex: 0,
-    clothIndex: 0 // index dans selectedCloth
-  },
-  tshirt: {
-    list: listCloth.tshirt,
-    imageEl: document.getElementById("upperBodyImage"),
-    textEl: document.getElementById("upperBodyText"),
-    nextBtn: document.getElementById("nextTshirt"),
-    prevBtn: document.getElementById("prevTshirt"),
-    index: 0,
-    selectedIndex: 0,
-    clothIndex: 1
-  },
-  pantalon: {
-    list: listCloth.pantalon,
-    imageEl: document.getElementById("lowerBodyImage"),
-    textEl: document.getElementById("lowerBodyText"),
-    index: 0,
-    selectedIndex: 0,
-    clothIndex: 2
-  },
-  shoes: {
-    list: listCloth.shoes, // à remplir plus tard si besoin
-    imageEl: document.getElementById("shoesImage"),
-    textEl: document.getElementById("shoesText"),
-    index: 0,
-    selectedIndex: 0,
-    clothIndex: 3
-  }
-};
 
 
-function setupClothingNavigation(partName) {
-  // const part = clothingParts[partName];
-
-  // const updateUI = () => {
-  //   const item = part.list[part.index];
-  //   if (!item) return;
-  //   part.imageEl.src = item.img;
-  //   selectedCloth[part.clothIndex] = {
-  //     img: item.img,
-  //     kg: parseFloat(item.kg || 0),
-  //     pastille:item.pastille
-  //   };
-  // };
-
-  //   part.index = (part.index + 1) % part.list.length;
-  // updateUI(); // Initialisation
-}
-
-Object.keys(clothingParts).forEach(setupClothingNavigation);
 
 // Fonction pour supprimer tous les vêtements
 // Fonction corrigée pour supprimer tous les vêtements
